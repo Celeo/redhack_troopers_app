@@ -20,8 +20,8 @@ class _StatsTabState extends ConsumerState<StatsTab> {
   late final TextEditingController _xp;
   late final TextEditingController _level;
   late final TextEditingController _speed;
-  late final TextEditingController _credits;
-  late final TextEditingController _lifestyle;
+  late final TextEditingController _masteryEdges;
+  late final TextEditingController _wealth;
 
   @override
   void initState() {
@@ -33,13 +33,13 @@ class _StatsTabState extends ConsumerState<StatsTab> {
     _xp = TextEditingController(text: c.xp == 0 ? '' : '${c.xp}');
     _level = TextEditingController(text: '${c.level}');
     _speed = TextEditingController(text: '${c.speed}');
-    _credits = TextEditingController(text: c.credits == 0 ? '' : '${c.credits}');
-    _lifestyle = TextEditingController(text: c.lifestyle);
+    _masteryEdges = TextEditingController(text: c.masteryEdges);
+    _wealth = TextEditingController(text: c.wealth);
   }
 
   @override
   void dispose() {
-    for (final c in [_name, _player, _initHd, _xp, _level, _speed, _credits, _lifestyle]) {
+    for (final c in [_name, _player, _initHd, _xp, _level, _speed, _masteryEdges, _wealth]) {
       c.dispose();
     }
     super.dispose();
@@ -77,9 +77,11 @@ class _StatsTabState extends ConsumerState<StatsTab> {
         Row(children: [
           Expanded(
             child: labeledField(
-              label: 'INIT & HIT DIE',
-              controller: _initHd,
-              onChanged: (v) => notifier.update((c) => c.copyWith(initHitDie: v)),
+              label: 'LEVEL',
+              controller: _level,
+              keyboardType: TextInputType.number,
+              onChanged: (v) =>
+                  notifier.update((c) => c.copyWith(level: int.tryParse(v) ?? c.level)),
             ),
           ),
           const SizedBox(width: 8),
@@ -95,16 +97,6 @@ class _StatsTabState extends ConsumerState<StatsTab> {
           const SizedBox(width: 8),
           Expanded(
             child: labeledField(
-              label: 'LEVEL',
-              controller: _level,
-              keyboardType: TextInputType.number,
-              onChanged: (v) =>
-                  notifier.update((c) => c.copyWith(level: int.tryParse(v) ?? c.level)),
-            ),
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: labeledField(
               label: 'SPEED (FT)',
               controller: _speed,
               keyboardType: TextInputType.number,
@@ -112,25 +104,20 @@ class _StatsTabState extends ConsumerState<StatsTab> {
                   notifier.update((c) => c.copyWith(speed: int.tryParse(v) ?? c.speed)),
             ),
           ),
-        ]),
-        const SizedBox(height: 12),
-        Row(children: [
+          const SizedBox(width: 8),
           Expanded(
             child: labeledField(
-              label: 'CREDITS',
-              controller: _credits,
-              keyboardType: TextInputType.number,
-              onChanged: (v) =>
-                  notifier.update((c) => c.copyWith(credits: int.tryParse(v) ?? c.credits)),
+              label: 'INIT & HIT DIE',
+              controller: _initHd,
+              onChanged: (v) => notifier.update((c) => c.copyWith(initHitDie: v)),
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: 8),
           Expanded(
-            flex: 2,
             child: labeledField(
-              label: 'LIFESTYLE',
-              controller: _lifestyle,
-              onChanged: (v) => notifier.update((c) => c.copyWith(lifestyle: v)),
+              label: 'MASTERY EDGES',
+              controller: _masteryEdges,
+              onChanged: (v) => notifier.update((c) => c.copyWith(masteryEdges: v)),
             ),
           ),
         ]),
@@ -158,13 +145,11 @@ class _StatsTabState extends ConsumerState<StatsTab> {
           attr: c.presence,
           onChanged: (a) => notifier.update((c) => c.copyWith(presence: a)),
         ),
-        // ── Luck ──────────────────────────────────────────────
-        sectionHeader('LUCK'),
-        counterRow(
-          label: 'GOOD LUCK TOKENS',
-          value: c.goodLuck,
-          onDecrement: () => notifier.update((c) => c.copyWith(goodLuck: c.goodLuck - 1)),
-          onIncrement: () => notifier.update((c) => c.copyWith(goodLuck: c.goodLuck + 1)),
+        const SizedBox(height: 8),
+        labeledField(
+          label: 'WEALTH',
+          controller: _wealth,
+          onChanged: (v) => notifier.update((c) => c.copyWith(wealth: v)),
         ),
 
         // ── Hit Points ────────────────────────────────────────
@@ -197,6 +182,21 @@ class _StatsTabState extends ConsumerState<StatsTab> {
             ],
           ),
         ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text('TRAUMA', style: TextStyle(color: Colors.white38, fontSize: 11)),
+            const SizedBox(width: 8),
+            Checkbox(
+              value: c.trauma1,
+              onChanged: (v) => notifier.update((c) => c.copyWith(trauma1: v ?? false)),
+            ),
+            Checkbox(
+              value: c.trauma2,
+              onChanged: (v) => notifier.update((c) => c.copyWith(trauma2: v ?? false)),
+            ),
+          ],
+        ),
       ],
     );
   }
@@ -212,9 +212,8 @@ class _AttrHeader extends StatelessWidget {
         children: const [
           SizedBox(width: 56),
           Expanded(child: Center(child: Text('SCORE', style: style))),
-          Expanded(child: Center(child: Text('CUR', style: style))),
           Expanded(child: Center(child: Text('MOD', style: style))),
-          SizedBox(width: 48, child: Center(child: Text('SV', style: style))),
+          SizedBox(width: 56, child: Center(child: Text('MASTERY', style: style))),
         ],
       ),
     );
@@ -234,19 +233,16 @@ class _AttributeRow extends StatefulWidget {
 
 class _AttributeRowState extends State<_AttributeRow> {
   late TextEditingController _score;
-  late TextEditingController _current;
 
   @override
   void initState() {
     super.initState();
     _score = TextEditingController(text: '${widget.attr.score}');
-    _current = TextEditingController(text: '${widget.attr.current}');
   }
 
   @override
   void dispose() {
     _score.dispose();
-    _current.dispose();
     super.dispose();
   }
 
@@ -272,12 +268,6 @@ class _AttributeRowState extends State<_AttributeRow> {
             }),
           ),
           Expanded(
-            child: _numField(_current, (v) {
-              final cur = int.tryParse(v) ?? widget.attr.current;
-              widget.onChanged(widget.attr.copyWith(current: cur));
-            }),
-          ),
-          Expanded(
             child: Center(
               child: Text(modStr,
                   style: TextStyle(
@@ -287,12 +277,12 @@ class _AttributeRowState extends State<_AttributeRow> {
             ),
           ),
           SizedBox(
-            width: 48,
+            width: 56,
             child: Center(
               child: Checkbox(
-                value: widget.attr.isSavingThrow,
+                value: widget.attr.hasMastery,
                 onChanged: (v) =>
-                    widget.onChanged(widget.attr.copyWith(isSavingThrow: v ?? false)),
+                    widget.onChanged(widget.attr.copyWith(hasMastery: v ?? false)),
               ),
             ),
           ),
@@ -308,7 +298,7 @@ class _AttributeRowState extends State<_AttributeRow> {
           child: TextField(
             controller: ctrl,
             onChanged: onChanged,
-            keyboardType: TextInputType.number,
+            keyboardType: TextInputType.numberWithOptions(signed: true),
             textAlign: TextAlign.center,
             style: const TextStyle(fontSize: 15),
             decoration: const InputDecoration(isDense: true),

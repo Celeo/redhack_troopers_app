@@ -23,10 +23,14 @@ class SkillsTab extends ConsumerWidget {
         ...c.skills.asMap().entries.map((e) {
           final i = e.key;
           final skill = e.value;
-          final total = skill.ranks + c.attrMod(skill.attribute);
+          final total1 = skill.ranks + c.attrMod(skill.attribute);
+          final total2 = skill.attribute2 != null
+              ? skill.ranks + c.attrMod(skill.attribute2!)
+              : null;
           return _SkillRow(
             skill: skill,
-            total: total,
+            total1: total1,
+            total2: total2,
             onRanksChanged: (ranks) {
               final updated = List<SkillEntry>.from(c.skills);
               updated[i] = skill.copyWith(ranks: ranks);
@@ -34,19 +38,6 @@ class SkillsTab extends ConsumerWidget {
             },
           );
         }),
-        const SizedBox(height: 8),
-        Row(children: [
-          const Text('UNUSED SKILL POINTS',
-              style: TextStyle(color: Colors.white38, fontSize: 11)),
-          const SizedBox(width: 8),
-          SizedBox(
-            width: 48,
-            child: _InlineInt(
-              value: c.unusedSkillPoints,
-              onChanged: (v) => notifier.update((c) => c.copyWith(unusedSkillPoints: v)),
-            ),
-          ),
-        ]),
 
         // ── Training ──────────────────────────────────────────
         sectionHeader('TRAINING'),
@@ -65,7 +56,7 @@ class _SkillHeader extends StatelessWidget {
       child: Row(
         children: const [
           Expanded(flex: 3, child: Text('SKILL', style: style)),
-          SizedBox(width: 44, child: Center(child: Text('ATTR', style: style))),
+          SizedBox(width: 64, child: Center(child: Text('ATTR', style: style))),
           SizedBox(width: 56, child: Center(child: Text('RANKS', style: style))),
           SizedBox(width: 48, child: Center(child: Text('TOTAL', style: style))),
         ],
@@ -76,12 +67,14 @@ class _SkillHeader extends StatelessWidget {
 
 class _SkillRow extends StatefulWidget {
   final SkillEntry skill;
-  final int total;
+  final int total1;
+  final int? total2;
   final ValueChanged<int> onRanksChanged;
 
   const _SkillRow({
     required this.skill,
-    required this.total,
+    required this.total1,
+    this.total2,
     required this.onRanksChanged,
   });
 
@@ -104,6 +97,11 @@ class _SkillRowState extends State<_SkillRow> {
     super.dispose();
   }
 
+  String get _attrLabel {
+    final a2 = widget.skill.attribute2;
+    return a2 != null ? '${widget.skill.attribute}/$a2' : widget.skill.attribute;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -112,13 +110,22 @@ class _SkillRowState extends State<_SkillRow> {
         children: [
           Expanded(
             flex: 3,
-            child: Text(widget.skill.name, style: const TextStyle(fontSize: 13)),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(widget.skill.name,
+                    style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+                Text(widget.skill.subtitle,
+                    style: const TextStyle(fontSize: 10, color: Colors.white38)),
+              ],
+            ),
           ),
           SizedBox(
-            width: 44,
+            width: 64,
             child: Center(
-              child: Text(widget.skill.attribute,
-                  style: const TextStyle(color: kGold, fontSize: 11)),
+              child: Text(_attrLabel,
+                  style: const TextStyle(color: kGold, fontSize: 10)),
             ),
           ),
           SizedBox(
@@ -141,9 +148,21 @@ class _SkillRowState extends State<_SkillRow> {
           SizedBox(
             width: 48,
             child: Center(
-              child: Text('${widget.total}',
-                  style: const TextStyle(
-                      fontSize: 14, fontWeight: FontWeight.bold, color: kGoldLight)),
+              child: widget.total2 != null
+                  ? Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('${widget.total1}',
+                            style: const TextStyle(
+                                fontSize: 12, fontWeight: FontWeight.bold, color: kGoldLight)),
+                        Text('${widget.total2}',
+                            style: const TextStyle(
+                                fontSize: 12, fontWeight: FontWeight.bold, color: kGoldLight)),
+                      ],
+                    )
+                  : Text('${widget.total1}',
+                      style: const TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.bold, color: kGoldLight)),
             ),
           ),
         ],
@@ -220,48 +239,6 @@ class _TrainingSectionState extends ConsumerState<_TrainingSection> {
           ),
         );
       }),
-    );
-  }
-}
-
-// Inline integer field used for small numeric inputs
-class _InlineInt extends StatefulWidget {
-  final int value;
-  final ValueChanged<int> onChanged;
-
-  const _InlineInt({required this.value, required this.onChanged});
-
-  @override
-  State<_InlineInt> createState() => _InlineIntState();
-}
-
-class _InlineIntState extends State<_InlineInt> {
-  late TextEditingController _ctrl;
-
-  @override
-  void initState() {
-    super.initState();
-    _ctrl = TextEditingController(text: '${widget.value}');
-  }
-
-  @override
-  void dispose() {
-    _ctrl.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      controller: _ctrl,
-      keyboardType: TextInputType.number,
-      textAlign: TextAlign.center,
-      style: const TextStyle(fontSize: 13),
-      decoration: const InputDecoration(isDense: true),
-      onChanged: (v) {
-        final parsed = int.tryParse(v);
-        if (parsed != null) widget.onChanged(parsed);
-      },
     );
   }
 }

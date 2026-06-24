@@ -3,7 +3,6 @@ import 'weapon.dart';
 import 'skill_entry.dart';
 import 'gear_item.dart';
 import 'contact.dart';
-import 'vehicle.dart';
 
 class Character {
   final String name;
@@ -12,17 +11,18 @@ class Character {
   final int xp;
   final int level;
   final int speed;
-  final int credits;
-  final String lifestyle;
+  final String masteryEdges;
 
   final Attribute body;
   final Attribute agility;
   final Attribute mind;
   final Attribute presence;
-  final int goodLuck;
+  final String wealth;
 
   final int currentHp;
   final int maxHp;
+  final bool trauma1;
+  final bool trauma2;
 
   final String armorName;
   final int totalAc;
@@ -32,17 +32,10 @@ class Character {
   final Weapon weapon2;
   final Weapon weapon3;
 
-  final int psionicsMaxUd;
-  final int psionicsCurrentUd;
-  final String psionicsFoci;
-
-  final Vehicle vehicle;
-
   final List<SkillEntry> skills;
-  final int unusedSkillPoints;
   final List<String> training;
 
-  final int currentLoad;
+  final int funds;
   final int maxLoad;
   final List<GearItem> gear;
   final List<Contact> contacts;
@@ -55,29 +48,25 @@ class Character {
     this.xp = 0,
     this.level = 1,
     this.speed = 30,
-    this.credits = 0,
-    this.lifestyle = '',
+    this.masteryEdges = '',
     Attribute? body,
     Attribute? agility,
     Attribute? mind,
     Attribute? presence,
-    this.goodLuck = 0,
+    this.wealth = '',
     this.currentHp = 0,
     this.maxHp = 0,
+    this.trauma1 = false,
+    this.trauma2 = false,
     this.armorName = '',
     this.totalAc = 10,
     this.dr = 0,
     Weapon? weapon1,
     Weapon? weapon2,
     Weapon? weapon3,
-    this.psionicsMaxUd = 0,
-    this.psionicsCurrentUd = 0,
-    this.psionicsFoci = '',
-    Vehicle? vehicle,
     List<SkillEntry>? skills,
-    this.unusedSkillPoints = 0,
     List<String>? training,
-    this.currentLoad = 0,
+    this.funds = 0,
     this.maxLoad = 0,
     List<GearItem>? gear,
     List<Contact>? contacts,
@@ -89,11 +78,12 @@ class Character {
         weapon1 = weapon1 ?? const Weapon(),
         weapon2 = weapon2 ?? const Weapon(),
         weapon3 = weapon3 ?? const Weapon(),
-        vehicle = vehicle ?? const Vehicle(),
         skills = skills ?? SkillEntry.defaults(),
         training = training ?? List.filled(7, ''),
         gear = gear ?? const [],
         contacts = contacts ?? List.generate(7, (_) => const Contact());
+
+  int get currentLoad => gear.fold(0, (sum, g) => sum + g.load);
 
   int attrMod(String attr) {
     switch (attr) {
@@ -117,29 +107,25 @@ class Character {
     int? xp,
     int? level,
     int? speed,
-    int? credits,
-    String? lifestyle,
+    String? masteryEdges,
     Attribute? body,
     Attribute? agility,
     Attribute? mind,
     Attribute? presence,
-    int? goodLuck,
+    String? wealth,
     int? currentHp,
     int? maxHp,
+    bool? trauma1,
+    bool? trauma2,
     String? armorName,
     int? totalAc,
     int? dr,
     Weapon? weapon1,
     Weapon? weapon2,
     Weapon? weapon3,
-    int? psionicsMaxUd,
-    int? psionicsCurrentUd,
-    String? psionicsFoci,
-    Vehicle? vehicle,
     List<SkillEntry>? skills,
-    int? unusedSkillPoints,
     List<String>? training,
-    int? currentLoad,
+    int? funds,
     int? maxLoad,
     List<GearItem>? gear,
     List<Contact>? contacts,
@@ -152,29 +138,25 @@ class Character {
         xp: xp ?? this.xp,
         level: level ?? this.level,
         speed: speed ?? this.speed,
-        credits: credits ?? this.credits,
-        lifestyle: lifestyle ?? this.lifestyle,
+        masteryEdges: masteryEdges ?? this.masteryEdges,
         body: body ?? this.body,
         agility: agility ?? this.agility,
         mind: mind ?? this.mind,
         presence: presence ?? this.presence,
-        goodLuck: goodLuck ?? this.goodLuck,
+        wealth: wealth ?? this.wealth,
         currentHp: currentHp ?? this.currentHp,
         maxHp: maxHp ?? this.maxHp,
+        trauma1: trauma1 ?? this.trauma1,
+        trauma2: trauma2 ?? this.trauma2,
         armorName: armorName ?? this.armorName,
         totalAc: totalAc ?? this.totalAc,
         dr: dr ?? this.dr,
         weapon1: weapon1 ?? this.weapon1,
         weapon2: weapon2 ?? this.weapon2,
         weapon3: weapon3 ?? this.weapon3,
-        psionicsMaxUd: psionicsMaxUd ?? this.psionicsMaxUd,
-        psionicsCurrentUd: psionicsCurrentUd ?? this.psionicsCurrentUd,
-        psionicsFoci: psionicsFoci ?? this.psionicsFoci,
-        vehicle: vehicle ?? this.vehicle,
         skills: skills ?? this.skills,
-        unusedSkillPoints: unusedSkillPoints ?? this.unusedSkillPoints,
         training: training ?? this.training,
-        currentLoad: currentLoad ?? this.currentLoad,
+        funds: funds ?? this.funds,
         maxLoad: maxLoad ?? this.maxLoad,
         gear: gear ?? this.gear,
         contacts: contacts ?? this.contacts,
@@ -188,29 +170,25 @@ class Character {
         'xp': xp,
         'level': level,
         'speed': speed,
-        'credits': credits,
-        'lifestyle': lifestyle,
+        'masteryEdges': masteryEdges,
         'body': body.toJson(),
         'agility': agility.toJson(),
         'mind': mind.toJson(),
         'presence': presence.toJson(),
-        'goodLuck': goodLuck,
+        'wealth': wealth,
         'currentHp': currentHp,
         'maxHp': maxHp,
+        'trauma1': trauma1,
+        'trauma2': trauma2,
         'armorName': armorName,
         'totalAc': totalAc,
         'dr': dr,
         'weapon1': weapon1.toJson(),
         'weapon2': weapon2.toJson(),
         'weapon3': weapon3.toJson(),
-        'psionicsMaxUd': psionicsMaxUd,
-        'psionicsCurrentUd': psionicsCurrentUd,
-        'psionicsFoci': psionicsFoci,
-        'vehicle': vehicle.toJson(),
         'skills': skills.map((s) => s.toJson()).toList(),
-        'unusedSkillPoints': unusedSkillPoints,
         'training': training,
-        'currentLoad': currentLoad,
+        'funds': funds,
         'maxLoad': maxLoad,
         'gear': gear.map((g) => g.toJson()).toList(),
         'contacts': contacts.map((c) => c.toJson()).toList(),
@@ -224,8 +202,7 @@ class Character {
         xp: (j['xp'] as num?)?.toInt() ?? 0,
         level: (j['level'] as num?)?.toInt() ?? 1,
         speed: (j['speed'] as num?)?.toInt() ?? 30,
-        credits: (j['credits'] as num?)?.toInt() ?? 0,
-        lifestyle: j['lifestyle'] as String? ?? '',
+        masteryEdges: j['masteryEdges'] as String? ?? '',
         body: j['body'] != null
             ? Attribute.fromJson(j['body'] as Map<String, dynamic>)
             : null,
@@ -238,9 +215,11 @@ class Character {
         presence: j['presence'] != null
             ? Attribute.fromJson(j['presence'] as Map<String, dynamic>)
             : null,
-        goodLuck: (j['goodLuck'] as num?)?.toInt() ?? 0,
+        wealth: j['wealth'] as String? ?? '',
         currentHp: (j['currentHp'] as num?)?.toInt() ?? 0,
         maxHp: (j['maxHp'] as num?)?.toInt() ?? 0,
+        trauma1: j['trauma1'] as bool? ?? false,
+        trauma2: j['trauma2'] as bool? ?? false,
         armorName: j['armorName'] as String? ?? '',
         totalAc: (j['totalAc'] as num?)?.toInt() ?? 10,
         dr: (j['dr'] as num?)?.toInt() ?? 0,
@@ -253,22 +232,16 @@ class Character {
         weapon3: j['weapon3'] != null
             ? Weapon.fromJson(j['weapon3'] as Map<String, dynamic>)
             : null,
-        psionicsMaxUd: (j['psionicsMaxUd'] as num?)?.toInt() ?? 0,
-        psionicsCurrentUd: (j['psionicsCurrentUd'] as num?)?.toInt() ?? 0,
-        psionicsFoci: j['psionicsFoci'] as String? ?? '',
-        vehicle: j['vehicle'] != null
-            ? Vehicle.fromJson(j['vehicle'] as Map<String, dynamic>)
-            : null,
         skills: j['skills'] != null
             ? (j['skills'] as List)
                 .map((s) => SkillEntry.fromJson(s as Map<String, dynamic>))
                 .toList()
             : null,
-        unusedSkillPoints: (j['unusedSkillPoints'] as num?)?.toInt() ?? 0,
         training: j['training'] != null
             ? List<String>.from(j['training'] as List)
             : null,
-        currentLoad: (j['currentLoad'] as num?)?.toInt() ?? 0,
+        // migrate old 'credits' key
+        funds: (j['funds'] as num?)?.toInt() ?? (j['credits'] as num?)?.toInt() ?? 0,
         maxLoad: (j['maxLoad'] as num?)?.toInt() ?? 0,
         gear: j['gear'] != null
             ? (j['gear'] as List)

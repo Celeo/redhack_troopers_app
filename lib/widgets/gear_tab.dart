@@ -21,27 +21,23 @@ class GearTab extends ConsumerWidget {
         // ── Gear ──────────────────────────────────────────────
         sectionHeader('GEAR'),
         Row(children: [
-          const Text('LOAD', style: TextStyle(color: Colors.white38, fontSize: 11)),
+          const Text('FUNDS (Ƀ)', style: TextStyle(color: Colors.white38, fontSize: 11)),
           const SizedBox(width: 8),
-          counterRow(
-            label: '',
-            value: c.currentLoad,
-            onDecrement: () =>
-                notifier.update((c) => c.copyWith(currentLoad: c.currentLoad - 1)),
-            onIncrement: () =>
-                notifier.update((c) => c.copyWith(currentLoad: c.currentLoad + 1)),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text('/ ', style: TextStyle(color: Colors.white38)),
-                SizedBox(
-                  width: 48,
-                  child: _InlineInt(
-                    value: c.maxLoad,
-                    onChanged: (v) => notifier.update((c) => c.copyWith(maxLoad: v)),
-                  ),
-                ),
-              ],
+          SizedBox(
+            width: 80,
+            child: _InlineInt(
+              value: c.funds,
+              onChanged: (v) => notifier.update((c) => c.copyWith(funds: v)),
+            ),
+          ),
+          const Spacer(),
+          Text('LOAD  ${c.currentLoad} / ',
+              style: const TextStyle(color: Colors.white38, fontSize: 11)),
+          SizedBox(
+            width: 48,
+            child: _InlineInt(
+              value: c.maxLoad,
+              onChanged: (v) => notifier.update((c) => c.copyWith(maxLoad: v)),
             ),
           ),
         ]),
