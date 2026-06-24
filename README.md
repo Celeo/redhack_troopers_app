@@ -22,7 +22,6 @@ A mobile character sheet app for the **Troopers: Diver Edition** tabletop RPG, b
 Requires Flutter 3.x with the Android SDK configured.
 
 ```bash
-cd app
 flutter pub get
 flutter run           # Android device
 flutter run -d linux  # Linux desktop

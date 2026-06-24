@@ -4,11 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-A Flutter character sheet app for the **Troopers** custom TTRPG system. The source PDF for the character sheet and the full game rules are in `source_material/`. All Flutter code lives under `app/`.
+A Flutter character sheet app for the **Troopers** custom TTRPG system. The source PDF for the character sheet and the full game rules are in `source_material/` (gitignored, kept local).
 
 ## Commands
 
-All commands run from `app/`:
+All commands run from the repo root:
 
 ```bash
 flutter run -d linux          # Run on Linux desktop (fastest iteration)
