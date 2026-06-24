@@ -67,7 +67,6 @@ class _ArmorSectionState extends ConsumerState<_ArmorSection> {
   late TextEditingController _armorName;
   late TextEditingController _totalAc;
   late TextEditingController _dr;
-  late TextEditingController _drShield;
 
   @override
   void initState() {
@@ -76,12 +75,11 @@ class _ArmorSectionState extends ConsumerState<_ArmorSection> {
     _armorName = TextEditingController(text: c.armorName);
     _totalAc = TextEditingController(text: '${c.totalAc}');
     _dr = TextEditingController(text: '${c.dr}');
-    _drShield = TextEditingController(text: '${c.drShield}');
   }
 
   @override
   void dispose() {
-    for (final c in [_armorName, _totalAc, _dr, _drShield]) {
+    for (final c in [_armorName, _totalAc, _dr]) {
       c.dispose();
     }
     super.dispose();
@@ -89,7 +87,6 @@ class _ArmorSectionState extends ConsumerState<_ArmorSection> {
 
   @override
   Widget build(BuildContext context) {
-    final c = ref.watch(characterProvider);
     return Column(
       children: [
         Row(children: [
@@ -112,39 +109,16 @@ class _ArmorSectionState extends ConsumerState<_ArmorSection> {
                   .update((c) => c.copyWith(totalAc: int.tryParse(v) ?? c.totalAc)),
             ),
           ),
-          const SizedBox(width: 8),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text('SHIELD',
-                  style: TextStyle(color: Colors.white38, fontSize: 10)),
-              Checkbox(
-                value: c.hasShield,
-                onChanged: (v) => widget.notifier
-                    .update((c) => c.copyWith(hasShield: v ?? false)),
-              ),
-            ],
-          ),
         ]),
         const SizedBox(height: 8),
         Row(children: [
           Expanded(
             child: labeledField(
-              label: 'DR (ARMOR)',
+              label: 'DR',
               controller: _dr,
               keyboardType: TextInputType.number,
               onChanged: (v) => widget.notifier
                   .update((c) => c.copyWith(dr: int.tryParse(v) ?? c.dr)),
-            ),
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: labeledField(
-              label: 'DR (SHIELD)',
-              controller: _drShield,
-              keyboardType: TextInputType.number,
-              onChanged: (v) => widget.notifier
-                  .update((c) => c.copyWith(drShield: int.tryParse(v) ?? c.drShield)),
             ),
           ),
         ]),

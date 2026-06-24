@@ -46,9 +46,3 @@ There is no code generation step — no `build_runner`, no generated files to ma
 - `udDropdown(...)` — usage die size picker
 
 **Theme:** Dark military aesthetic in `lib/theme.dart`. Key colors: `kGold` (`#B8860B`), `kGoldLight` (`#DAA520`), `kBg` (`#1A1A1A`), `kSurface` (`#2A2A2A`).
-
-## Known open questions
-
-- Attribute modifier formula: currently `(score - 10) ~/ 2` (D&D standard). Verify against game rules PDF before relying on derived skill totals.
-- The two "DR" columns on the paper sheet are mapped to `dr` (armor DR) and `drShield` (shield DR) — confirm this interpretation.
-- Skill total formula: `ranks + attrMod`. Confirm whether the game adds anything else.

@@ -19,16 +19,14 @@ class Character {
   final Attribute agility;
   final Attribute mind;
   final Attribute presence;
-  final Attribute luck;
+  final int goodLuck;
 
   final int currentHp;
   final int maxHp;
 
   final String armorName;
   final int totalAc;
-  final bool hasShield;
   final int dr;
-  final int drShield;
 
   final Weapon weapon1;
   final Weapon weapon2;
@@ -63,14 +61,12 @@ class Character {
     Attribute? agility,
     Attribute? mind,
     Attribute? presence,
-    Attribute? luck,
+    this.goodLuck = 0,
     this.currentHp = 0,
     this.maxHp = 0,
     this.armorName = '',
     this.totalAc = 10,
-    this.hasShield = false,
     this.dr = 0,
-    this.drShield = 0,
     Weapon? weapon1,
     Weapon? weapon2,
     Weapon? weapon3,
@@ -90,7 +86,6 @@ class Character {
         agility = agility ?? const Attribute(),
         mind = mind ?? const Attribute(),
         presence = presence ?? const Attribute(),
-        luck = luck ?? const Attribute(),
         weapon1 = weapon1 ?? const Weapon(),
         weapon2 = weapon2 ?? const Weapon(),
         weapon3 = weapon3 ?? const Weapon(),
@@ -111,7 +106,7 @@ class Character {
       case 'PRES':
         return presence.mod;
       default:
-        return luck.mod;
+        return 0;
     }
   }
 
@@ -128,14 +123,12 @@ class Character {
     Attribute? agility,
     Attribute? mind,
     Attribute? presence,
-    Attribute? luck,
+    int? goodLuck,
     int? currentHp,
     int? maxHp,
     String? armorName,
     int? totalAc,
-    bool? hasShield,
     int? dr,
-    int? drShield,
     Weapon? weapon1,
     Weapon? weapon2,
     Weapon? weapon3,
@@ -165,14 +158,12 @@ class Character {
         agility: agility ?? this.agility,
         mind: mind ?? this.mind,
         presence: presence ?? this.presence,
-        luck: luck ?? this.luck,
+        goodLuck: goodLuck ?? this.goodLuck,
         currentHp: currentHp ?? this.currentHp,
         maxHp: maxHp ?? this.maxHp,
         armorName: armorName ?? this.armorName,
         totalAc: totalAc ?? this.totalAc,
-        hasShield: hasShield ?? this.hasShield,
         dr: dr ?? this.dr,
-        drShield: drShield ?? this.drShield,
         weapon1: weapon1 ?? this.weapon1,
         weapon2: weapon2 ?? this.weapon2,
         weapon3: weapon3 ?? this.weapon3,
@@ -203,14 +194,12 @@ class Character {
         'agility': agility.toJson(),
         'mind': mind.toJson(),
         'presence': presence.toJson(),
-        'luck': luck.toJson(),
+        'goodLuck': goodLuck,
         'currentHp': currentHp,
         'maxHp': maxHp,
         'armorName': armorName,
         'totalAc': totalAc,
-        'hasShield': hasShield,
         'dr': dr,
-        'drShield': drShield,
         'weapon1': weapon1.toJson(),
         'weapon2': weapon2.toJson(),
         'weapon3': weapon3.toJson(),
@@ -249,16 +238,12 @@ class Character {
         presence: j['presence'] != null
             ? Attribute.fromJson(j['presence'] as Map<String, dynamic>)
             : null,
-        luck: j['luck'] != null
-            ? Attribute.fromJson(j['luck'] as Map<String, dynamic>)
-            : null,
+        goodLuck: (j['goodLuck'] as num?)?.toInt() ?? 0,
         currentHp: (j['currentHp'] as num?)?.toInt() ?? 0,
         maxHp: (j['maxHp'] as num?)?.toInt() ?? 0,
         armorName: j['armorName'] as String? ?? '',
         totalAc: (j['totalAc'] as num?)?.toInt() ?? 10,
-        hasShield: j['hasShield'] as bool? ?? false,
         dr: (j['dr'] as num?)?.toInt() ?? 0,
-        drShield: (j['drShield'] as num?)?.toInt() ?? 0,
         weapon1: j['weapon1'] != null
             ? Weapon.fromJson(j['weapon1'] as Map<String, dynamic>)
             : null,

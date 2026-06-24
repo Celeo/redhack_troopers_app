@@ -3,9 +3,9 @@ class Attribute {
   final int current;
   final bool isSavingThrow;
 
-  const Attribute({this.score = 10, this.current = 10, this.isSavingThrow = false});
+  const Attribute({this.score = 0, this.current = 0, this.isSavingThrow = false});
 
-  int get mod => (score - 10) ~/ 2;
+  int get mod => score;
 
   Attribute copyWith({int? score, int? current, bool? isSavingThrow}) => Attribute(
         score: score ?? this.score,
@@ -20,8 +20,8 @@ class Attribute {
       };
 
   factory Attribute.fromJson(Map<String, dynamic> j) => Attribute(
-        score: (j['score'] as num?)?.toInt() ?? 10,
-        current: (j['current'] as num?)?.toInt() ?? 10,
+        score: (j['score'] as num?)?.toInt() ?? 0,
+        current: (j['current'] as num?)?.toInt() ?? 0,
         isSavingThrow: j['isSavingThrow'] as bool? ?? false,
       );
 }

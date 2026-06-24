@@ -158,10 +158,13 @@ class _StatsTabState extends ConsumerState<StatsTab> {
           attr: c.presence,
           onChanged: (a) => notifier.update((c) => c.copyWith(presence: a)),
         ),
-        _AttributeRow(
-          label: 'LUCK',
-          attr: c.luck,
-          onChanged: (a) => notifier.update((c) => c.copyWith(luck: a)),
+        // ── Luck ──────────────────────────────────────────────
+        sectionHeader('LUCK'),
+        counterRow(
+          label: 'GOOD LUCK TOKENS',
+          value: c.goodLuck,
+          onDecrement: () => notifier.update((c) => c.copyWith(goodLuck: c.goodLuck - 1)),
+          onIncrement: () => notifier.update((c) => c.copyWith(goodLuck: c.goodLuck + 1)),
         ),
 
         // ── Hit Points ────────────────────────────────────────
