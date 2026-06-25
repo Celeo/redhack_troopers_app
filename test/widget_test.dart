@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:troopers_sheet/providers/character_provider.dart';
-import 'package:troopers_sheet/screens/character_sheet_screen.dart';
-import 'package:troopers_sheet/theme.dart';
+import 'package:troopers_diver_edition_sheet/providers/character_provider.dart';
+import 'package:troopers_diver_edition_sheet/screens/character_sheet_screen.dart';
+import 'package:troopers_diver_edition_sheet/theme.dart';
 
 void main() {
   testWidgets('app boots and shows four tabs', (WidgetTester tester) async {
