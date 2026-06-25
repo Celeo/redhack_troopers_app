@@ -39,6 +39,7 @@ class CharacterSheetScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final name = ref.watch(characterProvider.select((c) => c.name));
+    final generation = ref.watch(characterProvider.select((c) => c.generation));
     return DefaultTabController(
       length: 4,
       child: Scaffold(
@@ -65,8 +66,13 @@ class CharacterSheetScreen extends ConsumerWidget {
             ],
           ),
         ),
-        body: const TabBarView(
-          children: [StatsTab(), SkillsTab(), CombatTab(), GearTab()],
+        body: TabBarView(
+          children: [
+            StatsTab(key: ValueKey(generation)),
+            SkillsTab(key: ValueKey(('skills', generation))),
+            CombatTab(key: ValueKey(('combat', generation))),
+            GearTab(key: ValueKey(('gear', generation))),
+          ],
         ),
       ),
     );

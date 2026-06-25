@@ -36,7 +36,7 @@ class CharacterNotifier extends StateNotifier<Character> {
   }
 
   void reset() {
-    state = Character();
+    state = Character(generation: state.generation + 1);
     _prefs.remove(_kKey);
   }
 }

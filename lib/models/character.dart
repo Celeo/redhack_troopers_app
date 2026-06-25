@@ -5,6 +5,7 @@ import 'gear_item.dart';
 import 'contact.dart';
 
 class Character {
+  final int generation;
   final String name;
   final String playerName;
   final String initHitDie;
@@ -42,6 +43,7 @@ class Character {
   final String notes;
 
   Character({
+    this.generation = 0,
     this.name = '',
     this.playerName = '',
     this.initHitDie = '',
@@ -101,6 +103,7 @@ class Character {
   }
 
   Character copyWith({
+    int? generation,
     String? name,
     String? playerName,
     String? initHitDie,
@@ -132,6 +135,7 @@ class Character {
     String? notes,
   }) =>
       Character(
+        generation: generation ?? this.generation,
         name: name ?? this.name,
         playerName: playerName ?? this.playerName,
         initHitDie: initHitDie ?? this.initHitDie,
