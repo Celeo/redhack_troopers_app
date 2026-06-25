@@ -18,7 +18,8 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Update pubspec version
-        run: sed -i "s/^version: .*/version: ${{ github.event.inputs.version }}/" pubspec.yaml
+        run: |
+          sed -i "s/^version: .*/version: ${{ github.event.inputs.version }}/" pubspec.yaml
 
       - name: Commit and tag
         id: tag
