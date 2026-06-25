@@ -11,7 +11,7 @@ class Character {
   final int xp;
   final int level;
   final int speed;
-  final String masteryEdges;
+  final int masteryEdges;
 
   final Attribute body;
   final Attribute agility;
@@ -48,7 +48,7 @@ class Character {
     this.xp = 0,
     this.level = 1,
     this.speed = 30,
-    this.masteryEdges = '',
+    this.masteryEdges = 0,
     Attribute? body,
     Attribute? agility,
     Attribute? mind,
@@ -107,7 +107,7 @@ class Character {
     int? xp,
     int? level,
     int? speed,
-    String? masteryEdges,
+    int? masteryEdges,
     Attribute? body,
     Attribute? agility,
     Attribute? mind,
@@ -202,7 +202,7 @@ class Character {
         xp: (j['xp'] as num?)?.toInt() ?? 0,
         level: (j['level'] as num?)?.toInt() ?? 1,
         speed: (j['speed'] as num?)?.toInt() ?? 30,
-        masteryEdges: j['masteryEdges'] as String? ?? '',
+        masteryEdges: (j['masteryEdges'] as num?)?.toInt() ?? 0,
         body: j['body'] != null
             ? Attribute.fromJson(j['body'] as Map<String, dynamic>)
             : null,

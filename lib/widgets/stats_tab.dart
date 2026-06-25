@@ -20,7 +20,6 @@ class _StatsTabState extends ConsumerState<StatsTab> {
   late final TextEditingController _xp;
   late final TextEditingController _level;
   late final TextEditingController _speed;
-  late final TextEditingController _masteryEdges;
   late final TextEditingController _wealth;
 
   @override
@@ -33,13 +32,12 @@ class _StatsTabState extends ConsumerState<StatsTab> {
     _xp = TextEditingController(text: c.xp == 0 ? '' : '${c.xp}');
     _level = TextEditingController(text: '${c.level}');
     _speed = TextEditingController(text: '${c.speed}');
-    _masteryEdges = TextEditingController(text: c.masteryEdges);
     _wealth = TextEditingController(text: c.wealth);
   }
 
   @override
   void dispose() {
-    for (final c in [_name, _player, _initHd, _xp, _level, _speed, _masteryEdges, _wealth]) {
+    for (final c in [_name, _player, _initHd, _xp, _level, _speed, _wealth]) {
       c.dispose();
     }
     super.dispose();
@@ -113,12 +111,13 @@ class _StatsTabState extends ConsumerState<StatsTab> {
             ),
           ),
           const SizedBox(width: 8),
-          Expanded(
-            child: labeledField(
-              label: 'MASTERY EDGES',
-              controller: _masteryEdges,
-              onChanged: (v) => notifier.update((c) => c.copyWith(masteryEdges: v)),
-            ),
+          counterRow(
+            label: 'MASTERY\nEDGES',
+            value: c.masteryEdges,
+            onDecrement: () =>
+                notifier.update((c) => c.copyWith(masteryEdges: c.masteryEdges - 1)),
+            onIncrement: () =>
+                notifier.update((c) => c.copyWith(masteryEdges: c.masteryEdges + 1)),
           ),
         ]),
 
