@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-A Flutter character sheet app for the **Troopers** custom TTRPG system. The source PDF for the character sheet and the full game rules are in `source_material/` (gitignored, kept local).
+A Flutter character sheet app for the **Troopers: Diver Edition** custom TTRPG system. The source PDF for the character sheet and the full game rules are in `source_material/` (gitignored, kept local).
 
 ## Commands
 

@@ -1,4 +1,4 @@
-# Troopers Character Sheet
+# Troopers: Diver Edition - Character Sheet
 
 ![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter&logoColor=white)
 ![Dart](https://img.shields.io/badge/Dart-3.x-0175C2?logo=dart&logoColor=white)
@@ -32,7 +32,7 @@ flutter build apk     # Release APK
 
 The app code is released under the [MIT License](LICENSE).
 
-The **Troopers** ruleset, game mechanics, and associated creative content reflected in this app are the original
+The **Troopers: Diver Edition** ruleset, game mechanics, and associated creative content reflected in this app are the original
 work of the rulebook author and are used here by permission. This app does not reproduce the rulebook text.
 
 > This character sheet app is an independent creation by Matt Boulanger that is compatible with **Troppers: Diver Edition** by Petros Moros.

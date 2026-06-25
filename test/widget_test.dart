@@ -24,7 +24,7 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    expect(find.text('TROOPERS'), findsOneWidget);
+    expect(find.text('Troopers: Diver Edition'), findsOneWidget);
     expect(find.text('STATS'), findsOneWidget);
     expect(find.text('SKILLS'), findsOneWidget);
     expect(find.text('COMBAT'), findsOneWidget);

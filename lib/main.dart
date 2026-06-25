@@ -23,7 +23,7 @@ class TroopersApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'TROOPERS',
+      title: 'Troopers: Diver Edition',
       theme: troopersTheme(),
       home: const CharacterSheetScreen(),
       debugShowCheckedModeBanner: false,
