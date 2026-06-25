@@ -212,7 +212,6 @@ class _AttrHeader extends StatelessWidget {
         children: const [
           SizedBox(width: 56),
           Expanded(child: Center(child: Text('SCORE', style: style))),
-          Expanded(child: Center(child: Text('MOD', style: style))),
           SizedBox(width: 56, child: Center(child: Text('MASTERY', style: style))),
         ],
       ),
@@ -248,9 +247,6 @@ class _AttributeRowState extends State<_AttributeRow> {
 
   @override
   Widget build(BuildContext context) {
-    final mod = widget.attr.mod;
-    final modStr = mod >= 0 ? '+$mod' : '$mod';
-
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
@@ -266,15 +262,6 @@ class _AttributeRowState extends State<_AttributeRow> {
               final s = int.tryParse(v) ?? widget.attr.score;
               widget.onChanged(widget.attr.copyWith(score: s));
             }),
-          ),
-          Expanded(
-            child: Center(
-              child: Text(modStr,
-                  style: TextStyle(
-                      color: mod >= 0 ? Colors.greenAccent : Colors.redAccent,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15)),
-            ),
           ),
           SizedBox(
             width: 56,
