@@ -35,4 +35,4 @@ The app code is released under the [MIT License](LICENSE).
 The **Troopers: Diver Edition** ruleset, game mechanics, and associated creative content reflected in this app are the original
 work of the rulebook author and are used here by permission. This app does not reproduce the rulebook text.
 
-> This character sheet app is an independent creation by Matt Boulanger that is compatible with **Troppers: Diver Edition** by Petros Moros.
+> This character sheet app is an independent creation by Matt Boulanger that is compatible with **Troopers: Diver Edition** by Petros Moros.
