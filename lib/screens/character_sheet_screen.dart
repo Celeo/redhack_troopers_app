@@ -11,6 +11,31 @@ import '../widgets/gear_tab.dart';
 class CharacterSheetScreen extends ConsumerWidget {
   const CharacterSheetScreen({super.key});
 
+  Future<void> _confirmReset(BuildContext context, WidgetRef ref) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Reset Character?'),
+        content: const Text(
+            'This will permanently erase all saved data and start fresh. This cannot be undone.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('CANCEL'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            style: TextButton.styleFrom(foregroundColor: Colors.redAccent),
+            child: const Text('RESET'),
+          ),
+        ],
+      ),
+    );
+    if (confirmed == true) {
+      ref.read(characterProvider.notifier).reset();
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final name = ref.watch(characterProvider.select((c) => c.name));
@@ -21,6 +46,16 @@ class CharacterSheetScreen extends ConsumerWidget {
           title: Text(
             name.isEmpty ? 'Troopers: Diver Edition' : name.toUpperCase(),
           ),
+          actions: [
+            PopupMenuButton<String>(
+              onSelected: (v) {
+                if (v == 'reset') _confirmReset(context, ref);
+              },
+              itemBuilder: (_) => const [
+                PopupMenuItem(value: 'reset', child: Text('Reset character')),
+              ],
+            ),
+          ],
           bottom: const TabBar(
             tabs: [
               Tab(text: 'STATS'),

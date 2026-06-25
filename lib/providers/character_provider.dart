@@ -34,4 +34,9 @@ class CharacterNotifier extends StateNotifier<Character> {
     state = updater(state);
     _prefs.setString(_kKey, jsonEncode(state.toJson()));
   }
+
+  void reset() {
+    state = Character();
+    _prefs.remove(_kKey);
+  }
 }
