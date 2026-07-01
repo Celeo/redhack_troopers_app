@@ -15,29 +15,27 @@ class StatsTab extends ConsumerStatefulWidget {
 
 class _StatsTabState extends ConsumerState<StatsTab> {
   late final TextEditingController _name;
-  late final TextEditingController _player;
   late final TextEditingController _initHd;
   late final TextEditingController _xp;
   late final TextEditingController _level;
   late final TextEditingController _speed;
-  late final TextEditingController _wealth;
+  late final TextEditingController _masteryEdges;
 
   @override
   void initState() {
     super.initState();
     final c = ref.read(characterProvider);
     _name = TextEditingController(text: c.name);
-    _player = TextEditingController(text: c.playerName);
     _initHd = TextEditingController(text: c.initHitDie);
     _xp = TextEditingController(text: c.xp == 0 ? '' : '${c.xp}');
     _level = TextEditingController(text: '${c.level}');
     _speed = TextEditingController(text: '${c.speed}');
-    _wealth = TextEditingController(text: c.wealth);
+    _masteryEdges = TextEditingController(text: '${c.masteryEdges}');
   }
 
   @override
   void dispose() {
-    for (final c in [_name, _player, _initHd, _xp, _level, _speed, _wealth]) {
+    for (final c in [_name, _initHd, _xp, _level, _speed, _masteryEdges]) {
       c.dispose();
     }
     super.dispose();
@@ -53,25 +51,12 @@ class _StatsTabState extends ConsumerState<StatsTab> {
       children: [
         // ── Identity ──────────────────────────────────────────
         sectionHeader('IDENTITY'),
-        Row(children: [
-          Expanded(
-            flex: 2,
-            child: labeledField(
-              label: 'CHARACTER NAME',
-              controller: _name,
-              onChanged: (v) => notifier.update((c) => c.copyWith(name: v)),
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: labeledField(
-              label: 'PLAYER',
-              controller: _player,
-              onChanged: (v) => notifier.update((c) => c.copyWith(playerName: v)),
-            ),
-          ),
-        ]),
-        const SizedBox(height: 12),
+        labeledField(
+          label: 'CHARACTER NAME',
+          controller: _name,
+          onChanged: (v) => notifier.update((c) => c.copyWith(name: v)),
+        ),
+        const SizedBox(height: 8),
         Row(children: [
           Expanded(
             child: labeledField(
@@ -111,13 +96,14 @@ class _StatsTabState extends ConsumerState<StatsTab> {
             ),
           ),
           const SizedBox(width: 8),
-          counterRow(
-            label: 'MASTERY\nEDGES',
-            value: c.masteryEdges,
-            onDecrement: () =>
-                notifier.update((c) => c.copyWith(masteryEdges: c.masteryEdges - 1)),
-            onIncrement: () =>
-                notifier.update((c) => c.copyWith(masteryEdges: c.masteryEdges + 1)),
+          Expanded(
+            child: labeledField(
+              label: 'MASTERY EDGES',
+              controller: _masteryEdges,
+              keyboardType: TextInputType.number,
+              onChanged: (v) => notifier
+                  .update((c) => c.copyWith(masteryEdges: int.tryParse(v) ?? c.masteryEdges)),
+            ),
           ),
         ]),
 
@@ -144,13 +130,6 @@ class _StatsTabState extends ConsumerState<StatsTab> {
           attr: c.presence,
           onChanged: (a) => notifier.update((c) => c.copyWith(presence: a)),
         ),
-        const SizedBox(height: 8),
-        labeledField(
-          label: 'WEALTH',
-          controller: _wealth,
-          onChanged: (v) => notifier.update((c) => c.copyWith(wealth: v)),
-        ),
-
         // ── Hit Points ────────────────────────────────────────
         sectionHeader('HIT POINTS'),
         Padding(

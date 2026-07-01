@@ -55,7 +55,16 @@ class GearTab extends ConsumerWidget {
 
         // ── Contacts ──────────────────────────────────────────
         sectionHeader('CONTACTS'),
-        _ContactsSection(contacts: c.contacts, notifier: notifier),
+        ..._buildContactList(c.contacts, notifier),
+        const SizedBox(height: 4),
+        TextButton.icon(
+          onPressed: () {
+            final updated = [...c.contacts, const Contact()];
+            notifier.update((c) => c.copyWith(contacts: updated));
+          },
+          icon: const Icon(Icons.add, color: kGold),
+          label: const Text('ADD CONTACT', style: TextStyle(color: kGold)),
+        ),
 
         // ── Notes ─────────────────────────────────────────────
         sectionHeader('NOTES'),
@@ -79,6 +88,26 @@ class GearTab extends ConsumerWidget {
         onDelete: () {
           final list = [...gear]..removeAt(i);
           notifier.update((c) => c.copyWith(gear: list));
+        },
+      );
+    }).toList();
+  }
+
+  List<Widget> _buildContactList(List<Contact> contacts, CharacterNotifier notifier) {
+    return contacts.asMap().entries.map((e) {
+      final i = e.key;
+      final contact = e.value;
+      return _ContactRow(
+        key: ValueKey(i),
+        contact: contact,
+        onChanged: (updated) {
+          final list = [...contacts];
+          list[i] = updated;
+          notifier.update((c) => c.copyWith(contacts: list));
+        },
+        onDelete: () {
+          final list = [...contacts]..removeAt(i);
+          notifier.update((c) => c.copyWith(contacts: list));
         },
       );
     }).toList();
@@ -134,15 +163,6 @@ class _GearRowState extends State<_GearRow> {
             ),
           ),
           const SizedBox(width: 8),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text('UD', style: TextStyle(color: Colors.white38, fontSize: 9)),
-              udDropdown(item.ud, (v) => widget.onChanged(item.copyWith(ud: v ?? 0))),
-            ],
-          ),
-          const SizedBox(width: 8),
           SizedBox(
             width: 40,
             child: Column(
@@ -177,83 +197,84 @@ class _GearRowState extends State<_GearRow> {
 
 // ── Contacts ─────────────────────────────────────────────────
 
-class _ContactsSection extends StatefulWidget {
-  final List<Contact> contacts;
-  final CharacterNotifier notifier;
+class _ContactRow extends StatefulWidget {
+  final Contact contact;
+  final ValueChanged<Contact> onChanged;
+  final VoidCallback onDelete;
 
-  const _ContactsSection({required this.contacts, required this.notifier});
+  const _ContactRow({
+    super.key,
+    required this.contact,
+    required this.onChanged,
+    required this.onDelete,
+  });
 
   @override
-  State<_ContactsSection> createState() => _ContactsSectionState();
+  State<_ContactRow> createState() => _ContactRowState();
 }
 
-class _ContactsSectionState extends State<_ContactsSection> {
-  late List<TextEditingController> _names;
-  late List<TextEditingController> _occupations;
-  late List<TextEditingController> _notes;
+class _ContactRowState extends State<_ContactRow> {
+  late TextEditingController _name;
+  late TextEditingController _occupation;
+  late TextEditingController _notes;
 
   @override
   void initState() {
     super.initState();
-    _names = widget.contacts.map((c) => TextEditingController(text: c.name)).toList();
-    _occupations =
-        widget.contacts.map((c) => TextEditingController(text: c.occupation)).toList();
-    _notes = widget.contacts.map((c) => TextEditingController(text: c.notes)).toList();
+    _name = TextEditingController(text: widget.contact.name);
+    _occupation = TextEditingController(text: widget.contact.occupation);
+    _notes = TextEditingController(text: widget.contact.notes);
   }
 
   @override
   void dispose() {
-    for (final group in [_names, _occupations, _notes]) {
-      for (final c in group) {
-        c.dispose();
-      }
+    for (final c in [_name, _occupation, _notes]) {
+      c.dispose();
     }
     super.dispose();
   }
 
-  void _update(int i, Contact Function(Contact) fn) {
-    final updated = List<Contact>.from(widget.contacts);
-    updated[i] = fn(updated[i]);
-    widget.notifier.update((c) => c.copyWith(contacts: updated));
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: List.generate(7, (i) {
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(children: [
-                Expanded(
-                  child: labeledField(
-                    label: 'NAME',
-                    controller: _names[i],
-                    onChanged: (v) => _update(i, (c) => c.copyWith(name: v)),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: labeledField(
-                    label: 'OCCUPATION',
-                    controller: _occupations[i],
-                    onChanged: (v) => _update(i, (c) => c.copyWith(occupation: v)),
-                  ),
-                ),
-              ]),
-              const SizedBox(height: 4),
-              labeledField(
-                label: 'NOTES',
-                controller: _notes[i],
-                onChanged: (v) => _update(i, (c) => c.copyWith(notes: v)),
+    final contact = widget.contact;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(children: [
+            Expanded(
+              child: labeledField(
+                label: 'NAME',
+                controller: _name,
+                onChanged: (v) => widget.onChanged(contact.copyWith(name: v)),
               ),
-              const Divider(height: 16),
-            ],
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: labeledField(
+                label: 'OCCUPATION',
+                controller: _occupation,
+                onChanged: (v) => widget.onChanged(contact.copyWith(occupation: v)),
+              ),
+            ),
+            IconButton(
+              icon: const Icon(Icons.delete_outline, size: 18),
+              onPressed: widget.onDelete,
+              color: Colors.white24,
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
+            ),
+          ]),
+          const SizedBox(height: 8),
+          labeledField(
+            label: 'NOTES',
+            controller: _notes,
+            onChanged: (v) => widget.onChanged(contact.copyWith(notes: v)),
           ),
-        );
-      }),
+          const Divider(height: 16),
+        ],
+      ),
     );
   }
 }

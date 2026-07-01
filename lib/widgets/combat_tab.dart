@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/weapon.dart';
 import '../providers/character_provider.dart';
 import '../screens/character_sheet_screen.dart';
-import '../theme.dart';
 
 class CombatTab extends ConsumerWidget {
   const CombatTab({super.key});
@@ -194,45 +193,6 @@ class _WeaponCardState extends State<_WeaponCard> {
             ),
           ),
         ]),
-        const SizedBox(height: 8),
-        Row(
-          children: [
-            const Text('AMMO', style: TextStyle(color: Colors.white38, fontSize: 11)),
-            const SizedBox(width: 8),
-            IconButton(
-              icon: const Icon(Icons.remove_circle_outline, size: 18),
-              onPressed: () => widget.onChanged(w.copyWith(currentAmmo: w.currentAmmo - 1)),
-              color: kGold,
-              padding: EdgeInsets.zero,
-              constraints: const BoxConstraints(),
-            ),
-            const SizedBox(width: 4),
-            Text('${w.currentAmmo}',
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            const SizedBox(width: 4),
-            IconButton(
-              icon: const Icon(Icons.add_circle_outline, size: 18),
-              onPressed: () => widget.onChanged(w.copyWith(currentAmmo: w.currentAmmo + 1)),
-              color: kGold,
-              padding: EdgeInsets.zero,
-              constraints: const BoxConstraints(),
-            ),
-            const Text(' / ', style: TextStyle(color: Colors.white38)),
-            SizedBox(
-              width: 48,
-              child: TextField(
-                controller: TextEditingController(
-                    text: w.maxAmmo == 0 ? '' : '${w.maxAmmo}'),
-                keyboardType: TextInputType.number,
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 14),
-                decoration: const InputDecoration(isDense: true, hintText: 'max'),
-                onChanged: (v) =>
-                    widget.onChanged(w.copyWith(maxAmmo: int.tryParse(v) ?? w.maxAmmo)),
-              ),
-            ),
-          ],
-        ),
         const SizedBox(height: 8),
       ],
     );

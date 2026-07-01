@@ -7,7 +7,6 @@ import 'contact.dart';
 class Character {
   final int generation;
   final String name;
-  final String playerName;
   final String initHitDie;
   final int xp;
   final int level;
@@ -18,7 +17,6 @@ class Character {
   final Attribute agility;
   final Attribute mind;
   final Attribute presence;
-  final String wealth;
 
   final int currentHp;
   final int maxHp;
@@ -45,7 +43,6 @@ class Character {
   Character({
     this.generation = 0,
     this.name = '',
-    this.playerName = '',
     this.initHitDie = '',
     this.xp = 0,
     this.level = 1,
@@ -55,7 +52,6 @@ class Character {
     Attribute? agility,
     Attribute? mind,
     Attribute? presence,
-    this.wealth = '',
     this.currentHp = 0,
     this.maxHp = 0,
     this.trauma1 = false,
@@ -83,7 +79,7 @@ class Character {
         skills = skills ?? SkillEntry.defaults(),
         training = training ?? List.filled(7, ''),
         gear = gear ?? const [],
-        contacts = contacts ?? List.generate(7, (_) => const Contact());
+        contacts = contacts ?? const [];
 
   int get currentLoad => gear.fold(0, (sum, g) => sum + g.load);
 
@@ -105,7 +101,6 @@ class Character {
   Character copyWith({
     int? generation,
     String? name,
-    String? playerName,
     String? initHitDie,
     int? xp,
     int? level,
@@ -115,7 +110,6 @@ class Character {
     Attribute? agility,
     Attribute? mind,
     Attribute? presence,
-    String? wealth,
     int? currentHp,
     int? maxHp,
     bool? trauma1,
@@ -137,7 +131,6 @@ class Character {
       Character(
         generation: generation ?? this.generation,
         name: name ?? this.name,
-        playerName: playerName ?? this.playerName,
         initHitDie: initHitDie ?? this.initHitDie,
         xp: xp ?? this.xp,
         level: level ?? this.level,
@@ -147,7 +140,6 @@ class Character {
         agility: agility ?? this.agility,
         mind: mind ?? this.mind,
         presence: presence ?? this.presence,
-        wealth: wealth ?? this.wealth,
         currentHp: currentHp ?? this.currentHp,
         maxHp: maxHp ?? this.maxHp,
         trauma1: trauma1 ?? this.trauma1,
@@ -169,7 +161,6 @@ class Character {
 
   Map<String, dynamic> toJson() => {
         'name': name,
-        'playerName': playerName,
         'initHitDie': initHitDie,
         'xp': xp,
         'level': level,
@@ -179,7 +170,6 @@ class Character {
         'agility': agility.toJson(),
         'mind': mind.toJson(),
         'presence': presence.toJson(),
-        'wealth': wealth,
         'currentHp': currentHp,
         'maxHp': maxHp,
         'trauma1': trauma1,
@@ -201,7 +191,6 @@ class Character {
 
   factory Character.fromJson(Map<String, dynamic> j) => Character(
         name: j['name'] as String? ?? '',
-        playerName: j['playerName'] as String? ?? '',
         initHitDie: j['initHitDie'] as String? ?? '',
         xp: (j['xp'] as num?)?.toInt() ?? 0,
         level: (j['level'] as num?)?.toInt() ?? 1,
@@ -219,7 +208,6 @@ class Character {
         presence: j['presence'] != null
             ? Attribute.fromJson(j['presence'] as Map<String, dynamic>)
             : null,
-        wealth: j['wealth'] as String? ?? '',
         currentHp: (j['currentHp'] as num?)?.toInt() ?? 0,
         maxHp: (j['maxHp'] as num?)?.toInt() ?? 0,
         trauma1: j['trauma1'] as bool? ?? false,
