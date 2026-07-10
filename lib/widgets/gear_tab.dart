@@ -155,11 +155,18 @@ class _GearRowState extends State<_GearRow> {
         children: [
           Expanded(
             flex: 3,
-            child: TextField(
-              controller: _name,
-              style: const TextStyle(fontSize: 13),
-              decoration: const InputDecoration(isDense: true, hintText: 'Item name'),
-              onChanged: (v) => widget.onChanged(item.copyWith(name: v)),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(height: 9, width: double.infinity),
+                TextField(
+                  controller: _name,
+                  style: const TextStyle(fontSize: 13),
+                  decoration: const InputDecoration(isDense: true, hintText: 'Item name'),
+                  onChanged: (v) => widget.onChanged(item.copyWith(name: v)),
+                ),
+              ],
             ),
           ),
           const SizedBox(width: 8),
