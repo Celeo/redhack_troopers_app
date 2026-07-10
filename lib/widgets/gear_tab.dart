@@ -159,7 +159,10 @@ class _GearRowState extends State<_GearRow> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                const SizedBox(height: 9, width: double.infinity),
+                const Opacity(
+                  opacity: 0,
+                  child: Text('LOAD', style: TextStyle(fontSize: 9)),
+                ),
                 TextField(
                   controller: _name,
                   style: const TextStyle(fontSize: 13),

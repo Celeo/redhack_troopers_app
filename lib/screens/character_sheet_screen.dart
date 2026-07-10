@@ -107,14 +107,16 @@ Widget labeledField({
   int maxLines = 1,
   bool centerText = false,
 }) => Column(
-  crossAxisAlignment: CrossAxisAlignment.start,
+  crossAxisAlignment: centerText ? CrossAxisAlignment.center : CrossAxisAlignment.start,
   children: [
     SizedBox(
       height: 28,
+      width: double.infinity,
       child: Align(
-        alignment: Alignment.bottomLeft,
+        alignment: centerText ? Alignment.bottomCenter : Alignment.bottomLeft,
         child: Text(
           label,
+          textAlign: centerText ? TextAlign.center : TextAlign.start,
           style: const TextStyle(color: Colors.white38, fontSize: 10),
         ),
       ),
