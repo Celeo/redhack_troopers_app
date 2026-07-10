@@ -63,6 +63,7 @@ class _StatsTabState extends ConsumerState<StatsTab> {
               label: 'LEVEL',
               controller: _level,
               keyboardType: TextInputType.number,
+              centerText: true,
               onChanged: (v) =>
                   notifier.update((c) => c.copyWith(level: int.tryParse(v) ?? c.level)),
             ),
@@ -73,6 +74,7 @@ class _StatsTabState extends ConsumerState<StatsTab> {
               label: 'XP',
               controller: _xp,
               keyboardType: TextInputType.number,
+              centerText: true,
               onChanged: (v) =>
                   notifier.update((c) => c.copyWith(xp: int.tryParse(v) ?? c.xp)),
             ),
@@ -83,6 +85,7 @@ class _StatsTabState extends ConsumerState<StatsTab> {
               label: 'SPEED (FT)',
               controller: _speed,
               keyboardType: TextInputType.number,
+              centerText: true,
               onChanged: (v) =>
                   notifier.update((c) => c.copyWith(speed: int.tryParse(v) ?? c.speed)),
             ),
@@ -92,6 +95,7 @@ class _StatsTabState extends ConsumerState<StatsTab> {
             child: labeledField(
               label: 'INIT & HIT DIE',
               controller: _initHd,
+              centerText: true,
               onChanged: (v) => notifier.update((c) => c.copyWith(initHitDie: v)),
             ),
           ),
@@ -101,6 +105,7 @@ class _StatsTabState extends ConsumerState<StatsTab> {
               label: 'MASTERY EDGES',
               controller: _masteryEdges,
               keyboardType: TextInputType.number,
+              centerText: true,
               onChanged: (v) => notifier
                   .update((c) => c.copyWith(masteryEdges: int.tryParse(v) ?? c.masteryEdges)),
             ),

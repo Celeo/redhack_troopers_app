@@ -96,6 +96,7 @@ class _ArmorSectionState extends ConsumerState<_ArmorSection> {
               label: 'TOTAL AC',
               controller: _totalAc,
               keyboardType: TextInputType.number,
+              centerText: true,
               onChanged: (v) => widget.notifier
                   .update((c) => c.copyWith(totalAc: int.tryParse(v) ?? c.totalAc)),
             ),
@@ -172,6 +173,7 @@ class _WeaponCardState extends State<_WeaponCard> {
               label: 'ATT BONUS',
               controller: _att,
               keyboardType: TextInputType.numberWithOptions(signed: true),
+              centerText: true,
               onChanged: (v) =>
                   widget.onChanged(w.copyWith(attBonus: int.tryParse(v) ?? w.attBonus)),
             ),
@@ -181,6 +183,7 @@ class _WeaponCardState extends State<_WeaponCard> {
             child: labeledField(
               label: 'DAMAGE',
               controller: _dmg,
+              centerText: true,
               onChanged: (v) => widget.onChanged(w.copyWith(damage: v)),
             ),
           ),
@@ -189,6 +192,7 @@ class _WeaponCardState extends State<_WeaponCard> {
             child: labeledField(
               label: 'RANGE',
               controller: _range,
+              centerText: true,
               onChanged: (v) => widget.onChanged(w.copyWith(range: v)),
             ),
           ),

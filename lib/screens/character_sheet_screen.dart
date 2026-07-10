@@ -105,15 +105,26 @@ Widget labeledField({
   required ValueChanged<String> onChanged,
   TextInputType keyboardType = TextInputType.text,
   int maxLines = 1,
+  bool centerText = false,
 }) => Column(
   crossAxisAlignment: CrossAxisAlignment.start,
   children: [
-    Text(label, style: const TextStyle(color: Colors.white38, fontSize: 10)),
+    SizedBox(
+      height: 28,
+      child: Align(
+        alignment: Alignment.bottomLeft,
+        child: Text(
+          label,
+          style: const TextStyle(color: Colors.white38, fontSize: 10),
+        ),
+      ),
+    ),
     TextField(
       controller: controller,
       onChanged: onChanged,
       keyboardType: keyboardType,
       maxLines: maxLines,
+      textAlign: centerText ? TextAlign.center : TextAlign.start,
       style: const TextStyle(fontSize: 14),
       decoration: const InputDecoration(border: UnderlineInputBorder()),
     ),
